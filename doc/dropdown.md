@@ -1,0 +1,340 @@
+<script>
+Loader.load([
+	'./assets/_new_vendors.js',
+	'./assets/_new_vendors.css',
+	'./assets/dropdown.js',
+	'./assets/common.css'
+]);
+
+function fn1() {
+	// 假设数据如下：
+	var json = [
+		{"value":"ts0812100","text":"詹老师"},
+		{"value":"ts081211","text":"教师11"},
+		{"value":"ts081212","text":"教师12"}
+	];
+
+	var dropdown = new Dropdown().init({
+		relElm: $('#cpn-dropdown-1'),
+		readonly: true,
+		dataCallback: function(callback) {
+			callback(json);
+		},
+		onSelected: function(value, text) {
+			alert('选中 '+text+'@'+value);
+		}
+	});
+
+	dropdown.setValue();
+
+	dropdown.relElm.show();
+}
+
+function fn2() {
+	// 假设数据如下：
+	var json = [
+		{"value":"ts0812100","text":"詹老师"},
+		{"value":"ts081211","text":"教师11"},
+		{"value":"ts081212","text":"教师12"}
+	];
+
+	// 创建实例
+	var dropdown = new Dropdown().init({
+		relElm: $('#cpn-dropdown-2'),
+		dataCallback: function(callback) {
+			callback(json);
+		}
+	});
+
+	dropdown.relElm.show();
+}
+
+function fn3() {
+	// 假设数据如下：
+	var json = [
+		{"sysLoginId":"ts0812100","nickname":"詹老师","initPassword":"111111","userSno":"100"},
+		{"sysLoginId":"ts081211","nickname":"教师11","initPassword":"111111","userSno":"11"},
+		{"sysLoginId":"ts081212","nickname":"教师12","initPassword":"111111","userSno":"12"}
+	];
+
+	// 创建实例
+	var dropdown = new Dropdown().init({
+		relElm: $('#cpn-dropdown-3'),
+		readonly: true,
+		dataCallback: function(callback) {
+			callback(json);
+		},
+		filter: function(item) {
+			item.text = item.nickname+'_'+item.userSno;
+			item.value = item.sysLoginId;
+
+			return true;
+		}
+	});
+
+	// 显示第二项
+	dropdown.setValue('ts081211');
+
+	dropdown.relElm.show();
+}
+
+</script>
+
+可输入的下拉列表组件
+=============================
+
+> 支持一般的下拉列表功能，也支持输入查询
+
+- - -
+在项目中的路径 ```/src/scripts/modules/dropdown.js```
+- - -
+
+> 组件的标准 HTML 结构
+
+```
+<div class="admin-form-dropdown">
+	<span class="admin-form-input">
+		<input type="text" />
+	</span>
+</div>
+```
+- - -
+
+组件常用配置
+------------------------
+
++ **relElm** [HTML Element | JQ Element Object] 组件的外部容器，一般建议为 .admin-form-dropdown 这个节点
++ **readonly** [Boolean] 组件是否只读，即关闭输入查询功能
++ **dataApi** [String] 数据获取的url
++ **dataCallback** [Function] 数据获取的函数 和dataApi互斥，优先级高于dataApi
++ **listWidth** [Number] 设置下位列表的宽度，默认是 relElm 的宽度值
++ **filter(item)** [Function] 列表的数据过滤器，也可以当做数据适配。有默认函数，具体看代码的实现
++ **onSelected(value, text)** [Function] 列表点击某一项后的回调
+
+- - -
+
+实例的属性和方法
+------------------------
+
+### ```.data ```
+
+> 用于缓存组件的数据
+
+- - -
+
+### ```.dom ```
+
+> 输入框，组件为指向 input 节点，组件的数据也会绑定在这个元素节点上
+
+- - -
+
+### ```.listElm ```
+
+> 下拉列表容器节点，在组件内部设置
+
+- - -
+
+### ```.init(settings) ```
+
+> 组件初始化方法
+
++ **settings** [Object] 组件的配置，配置内容参考上一节
+
+- - -
+
+### ```.domInit() ```
+
+> 创建 HTML 元素节点，一般不需要使用
+
+- - -
+
+### ```.eventInit() ```
+
+> 初始化事件绑定，一般不需要使用
+
+- - -
+
+### ```.getData(params) ```
+
+> 用各种方式获取下拉列表的数据，返回 promise 对象，一般不需要直接使用
+
++ **params** [Object] 可选，请求时附带的参数
+
+- - -
+
+### ```.showData(params, callback) ```
+
+> 获取下拉列表的数据后，显示出来，参数会传递给 .getData 方法
+
++ **params** [Object] 可选，请求时附带的参数
++ **callback** [Function] 可选，请求数据返回后，调用 callback
+
+- - -
+
+### ```.getValue() ```
+
+> 获取下拉列表选中数据的值，该值对应数据对象的 value 属性值
+
+- - -
+
+### ```.setValue(value) ```
+
+> 设置下拉列表选中指定值的数据
+
++ **value** [String | Number] 指定数据的 value 属性值
+
+- - -
+
+### ```.setValue(value) ```
+
+> 设置下拉列表选中指定值的数据
+
++ **value** [String | Number] 指定数据的 value 属性值
+
+- - -
+
+常用示例
+------------------------
+
+### 普通的下拉列表
+
+> Example:
+
+**HTML 代码**
+
+```
+<div class="admin-form-dropdown" id="cpn-dropdown-1">
+	<span class="admin-form-input">
+		<input type="text" />
+	</span>
+</div>
+```
+
+**javascript 代码**
+
+```javascript
+
+// 引入下拉列表组件类
+var Dropdown = require('scripts/modules/dropdown');
+
+// 假设数据如下：
+var json = [
+	{"value":"ts0812100","text":"詹老师"},
+	{"value":"ts081211","text":"教师11"},
+	{"value":"ts081212","text":"教师12"}
+];
+
+// 创建实例
+var dropdown = new Dropdown().init({
+	relElm: $('#cpn-dropdown-1'),
+	readonly: true,
+	dataCallback: function(callback) {
+		callback(json);
+	},
+	onSelected: function(value, text) {
+		alert('选中 '+text+'@'+value);
+	}
+});
+
+// 显示第一项
+dropdown.setValue();
+
+```
+<a href="#fn1" onclick="fn1()">显示组件</a>
+<div class="admin-form-dropdown" id="cpn-dropdown-1" style="display:none;"><span class="admin-form-input"><input type="text" /></span></div>
+
+- - -
+
+### 可输入的下拉列表
+
+> Example:
+
+**HTML 代码**
+
+```
+<div class="admin-form-dropdown" id="cpn-dropdown-2">
+	<span class="admin-form-input">
+		<input type="text" />
+	</span>
+</div>
+```
+
+**javascript 代码**
+
+```javascript
+
+// 引入下拉列表组件类
+var Dropdown = require('scripts/modules/dropdown');
+
+// 假设数据如下：
+var json = [
+	{"value":"ts0812100","text":"詹老师"},
+	{"value":"ts081211","text":"教师11"},
+	{"value":"ts081212","text":"教师12"}
+];
+
+// 创建实例
+var dropdown = new Dropdown().init({
+	relElm: $('#cpn-dropdown-2'),
+	dataCallback: function(callback) {
+		callback(json);
+	}
+});
+
+```
+<a href="#fn2" onclick="fn2()">显示组件</a>
+<div class="admin-form-dropdown" id="cpn-dropdown-2" style="display:none;"><span class="admin-form-input"><input type="text" /></span></div>
+
+- - -
+
+### 数据适配
+
+> Example:
+
+**HTML 代码**
+
+```
+<div class="admin-form-dropdown" id="cpn-dropdown-3">
+	<span class="admin-form-input">
+		<input type="text" />
+	</span>
+</div>
+```
+
+**javascript 代码**
+
+```javascript
+
+// 引入下拉列表组件类
+var Dropdown = require('scripts/modules/dropdown');
+
+// 假设数据如下：
+var json = [
+	{"sysLoginId":"ts0812100","nickname":"詹老师","initPassword":"111111","userSno":"100"},
+	{"sysLoginId":"ts081211","nickname":"教师11","initPassword":"111111","userSno":"11"},
+	{"sysLoginId":"ts081212","nickname":"教师12","initPassword":"111111","userSno":"12"}
+];
+
+// 创建实例
+var dropdown = new Dropdown().init({
+	relElm: $('#cpn-dropdown-3'),
+	readonly: true,
+	dataCallback: function(callback) {
+		callback(json);
+	},
+	filter: function(item) {
+		item.text = item.nickname+'_'+item.userSno;
+		item.value = item.sysLoginId;
+
+		return true;
+	}
+});
+
+// 显示第二项
+dropdown.setValue('ts081211');
+
+```
+<a href="#fn3" onclick="fn3()">显示组件</a>
+<div class="admin-form-dropdown" id="cpn-dropdown-3" style="display:none;"><span class="admin-form-input"><input type="text" /></span></div>
+
+- - -

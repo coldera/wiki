@@ -1,0 +1,204 @@
+
+会计电算化实操系统项目
+=============================
+
+总体说明
+------------------------
+
+> 针对会计电算化模拟考试而开发的系统
+> 因为对环境有依赖，所以不能进行 demo 演示
+
+> 系统有以下设计思想：
+
+> 1. 组件化开发，系统中一切 UI 都用组件来实现，并集中在组件管理器中管理
+> 2. 流程即视图，一项业务流程分解为一连串的视图，每个视图指定其上下游视图
+> 3. 数据持久化，通过利用 HTML5 localStorage 和 IE 特有的 User Data 来管理数据，并设定一个存储机制
+> 4. 视图标准化，通过实现一个视图管理器来对视图代码编写进行标准化，方便维护
+
+- - -
+
+代码目录结构
+------------------------
+
+> 在 [环境和项目](page/environment.md) 中可以查看项目代码
+
+> 项目代码分为主体代码和模板代码
+> 主体代码目录 <md-path>/assets/apo/</md-path>
+> 模板代码目录 <md-path>/tmod/apo/</md-path>
+
+以下为主体代码目录结构说明：
+
+```javascript
+├─img // 系统相关图片目录
+│          
+├─js
+│  │  apocore.js  // 系统的主入口，实现了一些对外业务相关的方法
+│  │  boot.js // 空文件，用于打包
+│  │  main.js // 对外入口，暴露一些命令给外部使用
+│  │  
+│  ├─data
+│  │      base.js // 数据管理器，实现数据的基础操作
+│  │      default.js // 实操的基础预设数据
+│  │      excel.js // 报表的基础预设数据
+│  │      menu.js // 菜单数据配置
+│  │      text.js // 国际化文本
+│  │      view.js // 视图数据配置
+│  │      
+│  ├─lib  // 第三方库
+│  │      json.js
+│  │      pikaday.js
+│  │      store.js
+│  │      
+│  ├─modules
+│  │      component.js // 组件管理器
+│  │      data-adapter.js // 数据交互适配器，实现客户端到服务端的双向数据适配
+│  │      dropdown.js // 下拉列表组件
+│  │      excel.js // 报表组件
+│  │      helper.js // 一些 UI 相关的通用函数集合
+│  │      input-dropdown.js // 可输入的下拉列表组件
+│  │      menu.js // 系统菜单
+│  │      number-input.js // 数值输入框组件
+│  │      record-input.js // 凭证金额输入框组件
+│  │      record-table.js // 凭证输入表格
+│  │      relative-table.js // 关联表格组件
+│  │      table.js // 表格组件
+│  │      tools.js // 基础的工具函数集合
+│  │      view.js // 视图管理器
+│  │      window.js // 弹窗组件
+│  │      
+│  └─view  // 按业务模块分出来的视图文件
+│          view_0.js 
+│          view_1.js
+│          view_10.js
+│          view_2.js
+│          view_3.js
+│          view_5.js
+│          view_6.js
+│          view_7.js
+│          view_9.js
+│          
+├─sass
+│  │  global.scss
+│  │  ui.scss
+│  │  
+│  ├─base
+│  │      _global-settings.scss
+│  │      _globalfun.scss
+│  │      _reset.scss
+│  │      
+│  ├─modules
+│  │      _module-alert.scss
+│  │      _module-btn-icon.scss
+│  │      _module-date.scss
+│  │      _module-dialog.scss
+│  │      _module-form.scss
+│  │      _module-icon.scss
+│  │      _module-menu.scss
+│  │      _module-side-menu.scss
+│  │      _module-tab.scss
+│  │      _module-table.scss
+│  │      
+│  └─view
+│          start.scss
+│          view.scss
+│          
+├─tpl // 由tmod生成的模板js
+│      
+└─video // 视频解析的文件 
+```
+
+- - -
+
+相关命令
+------------------------
+
+> 系统对外部暴露的方法以命令的方式提供，同时在 window 定义一个全局函数 apoExportCmd(cmd, data, callback) 用于调用传入命令
+
+### ```apoExportCmd('open', {questionId:xxx, cardId:xxx, type:xxx})```
+
+> 打开一个实操题目
+
++ **questionId** [String] 题目的ID
++ **cardId** [String] 可选，如果有答题卡ID，就传
++ **type** [String] 可选，题目所在试卷类型，用于区分不同模块下的同一道题目
+
+- - -
+
+### ```apoExportCmd('submit', {type:xxx})```
+
+> 提交一道实操题的答案
+
++ **type** [String] 可选，题目所在试卷类型，用于区分不同模块下的同一道题目
+
+- - -
+
+### ```apoExportCmd('reset', {questionId:xxx})```
+
+> 消除指定题目的缓存，用于重做实操题，然后再重新打开题目
+
++ **questionId** [String] 题目的ID
+
+- - -
+
+### ```apoExportCmd('clear', {questionId:xxx})```
+
+> 消除指定题目的缓存，不传 questionId 时清空全部缓存
+
++ **questionId** [String] 可选，题目的ID
+
+- - -
+
+### ```apoExportCmd('listen', {onSubmit:xxx})```
+
+> 注册事件监听，目前只实现 onSubmit 事件，可自行扩展
+
++ **onSubmit** [Function] 提交题目答案成功的回调，对应系统 operation_submit_result 消息
+
+- - -
+
+
+接入方法
+------------------------
+
++ 1.将实操系统 jsp 页面，移植部署到目标服务器的指定项目中
+`http://192.168.9.146/svn/acc369/trunk/acc369-school-static/projects/exam/v/exam/exam-operation.jsp`
+
++ 2.在目标页面中添加实操 iframe，并且 src 指向步骤1的 jsp 页面
+
+```
+<iframe id="operation-exam-container" src="/exam/api.do?=exam.operation.forward"></iframe>
+```
++ 3.等待实操页面加载完成，并且 apoExportCmd 方法可访问即接入成功，注意提交答案的接口可能需要用 nginx rewrite
+
+建议实现一个方法去判断实操页面是否加载完成，例如
+
+```javascript
+
+var operationContainer = $('#operation-exam-container');
+
+var sendToOperationSystem = function(cmd, data) {
+
+    if (!questionIsOperation) {
+        return;
+    }
+
+    var iframe = operationContainer[0].contentWindow;
+    if (iframe && iframe.apoExportCmd) {
+        iframe.apoExportCmd(cmd, data);
+    } else {
+        setTimeout(function() {
+            sendToOperationSystem(cmd, data);
+        }, 500);
+    }
+}
+
+sendToOperationSystem('listen', {
+	onSubmit: function(result) {
+		// do something
+	}
+});
+
+```
+
+
+- - -

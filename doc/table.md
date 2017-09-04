@@ -1,0 +1,1013 @@
+<script>
+Loader.load([
+	'./assets/_new_vendors.js',
+	'./assets/_new_vendors.css',
+	'./assets/table.js',
+	'./assets/common.css'
+]);
+
+function fn1() {
+	// 假设数据如下：
+	var json = [
+		{"sysLoginId":"ts0812100","nickname":"詹老师","initPassword":"111111","userSno":"100"},
+		{"sysLoginId":"ts081211","nickname":"教师11","initPassword":"111111","userSno":"11","_state":Table.STATE_DISCARD},
+		{"sysLoginId":"ts081212","nickname":"教师12","initPassword":"111111","userSno":"12"}
+	];
+
+	// 表格字段配置：
+	var tableField = [
+		{text:'序号', key:'_no', width:50},
+		{text:'账号名', key:'sysLoginId'},
+		{text:'教师工号', key:'userSno'},
+		{text:'教师姓名', key:'nickname'}
+	];
+
+	var table = new Table().init({
+		relElm: $('#table-wrapper-1'),
+		fields: tableField,
+		dataCallback: function(callback) {
+			callback(json);
+		}
+	});
+
+	table.showData();
+}
+
+function fn2() {
+
+	// 表格字段配置：
+	var tableField = [
+		{text:'序号', key:'_no', width:50},
+		{text:'账号名', key:'sysLoginId'},
+		{text:'教师工号', key:'_userSno'},
+		{text:'教师姓名', key:'nickname'}
+	];
+
+	var table = new Table().init({
+		relElm: $('#table-wrapper-2'),
+		fields: tableField,
+		pageElm: $('#table-page-wrapper-2'),
+		pageCallback: function(index) {
+
+			table.dataApi = '/data/table_test_fn2_page'+index+'.json';
+
+			table.showData({
+				pageNum: index,
+				pageSize: 2
+			});
+		},
+		dataApi: '/data/table_test_fn2_page1.json'
+	});
+
+	table.adapter.items = function(item) {
+		item._id = item.sysLoginId;
+		item._userSno = 'YASOON_'+item.userSno;
+
+		return item;
+	};
+
+	table.showData({
+		pageNum: 1,
+		pageSize: 2
+	});
+
+}
+
+function fn3() {
+	// 假设数据如下：
+	var json = [
+		{"sysLoginId":"ts0812100","nickname":"詹老师","initPassword":"111111","userSno":"100", "schoolName":"业速大学"},
+		{"sysLoginId":"ts081211","nickname":"教师11","initPassword":"111111","userSno":"11", "schoolName":"业速大学"},
+		{"sysLoginId":"ts081212","nickname":"教师12","initPassword":"111111","userSno":"12", "schoolName":"业速小学"}
+	];
+
+	// 表格字段配置：
+	var tableField = [
+		{text:'学校', key:'schoolName'},
+		{text:'账号名', key:'sysLoginId'},
+		{text:'教师工号', key:'userSno'},
+		{text:'教师姓名', key:'nickname'}
+	];
+
+	var table = new Table().init({
+		relElm: $('#table-wrapper-3'),
+		fields: tableField,
+		dataCallback: function(callback) {
+			callback(json);
+		},
+		collapse: 'schoolName',
+		fieldFilter: function(cpn) {
+			if(cpn.key === 'sysLoginId') {
+				return false;
+			}
+		}
+	});
+
+	table.showData();
+
+}
+
+function fn4() {
+	// 假设数据如下：
+	var json = [
+		{"sysLoginId":"ts0812100","nickname":"詹老师","initPassword":"111111","userSno":"100"},
+		{"sysLoginId":"ts081211","nickname":"教师11","initPassword":"111111","userSno":"11"},
+		{"sysLoginId":"ts081212","nickname":"教师12","initPassword":"111111","userSno":"12"}
+	];
+
+	// 表格字段配置：
+	var tableField = [
+		{text:'序号', key:'_no', width:50},
+		{text:'账号名', key:'sysLoginId'},
+		{text:'教师工号', key:'userSno', sort:'asc', dataType:'number'},
+		{text:'教师姓名', key:'nickname', sort:'desc'}
+	];
+
+	var table = new Table().init({
+		relElm: $('#table-wrapper-4'),
+		fields: tableField,
+		dataCallback: function(callback) {
+			callback(json);
+		}
+	});
+
+	table.showData();
+}
+
+function fn5() {
+	// 假设数据如下：
+	var json = [
+		{"sysLoginId":"ts0812100","nickname":"詹老师","initPassword":"111111","userSno":"100"},
+		{"sysLoginId":"ts081211","nickname":"教师11","initPassword":"111111","userSno":"11"},
+		{"sysLoginId":"ts081212","nickname":"教师12","initPassword":"111111","userSno":"12"}
+	];
+
+	// 表格字段配置：
+	var tableField = [
+		{text:'序号', key:'_no', width:50},
+		{text:'账号名', key:'sysLoginId'},
+		{text:'教师工号', key:'userSno'},
+		{text:'教师姓名', key:'nickname'},
+		{text:'个人网站', key:'_page', components:[{
+			appearance: 'link',
+			text: '查看',
+			target: 'blank',
+			href: '/userPage.html?uid={{sysLoginId}}',
+			cmd: 'page-link'
+		}], cpnFilter:function(cpn, item){
+
+			if(item.sysLoginId === 'ts081211') {
+				item._pageText = '未开通';
+				item._pageSkipLink = true;
+			}
+
+			return true;
+		}},
+	];
+
+	var table = new Table().init({
+		relElm: $('#table-wrapper-5'),
+		fields: tableField,
+		dataCallback: function(callback) {
+			callback(json);
+		}
+	});
+
+	table.showData();
+}
+
+function fn6() {
+	// 假设数据如下：
+	var json = [
+		{"sysLoginId":"ts0812100","nickname":"詹老师","initPassword":"111111","userSno":"100"},
+		{"sysLoginId":"ts081211","nickname":"教师11","initPassword":"111111","userSno":"11"},
+		{"sysLoginId":"ts081212","nickname":"教师12","initPassword":"111111","userSno":"12"}
+	];
+
+	// 表格字段配置：
+	var tableField = [
+		{text:'序号', key:'_no', width:50},
+		{text:'账号名', key:'sysLoginId'},
+		{text:'教师工号', key:'userSno'},
+		{text:'教师姓名', key:'nickname'},
+		{text:'全选', key:'_op', width:80, align:'center', checkboxField:'check', components:[{
+			appearance: 'checkbox',
+			cmd: 'check',
+			set: function(item, value, update) {
+				item.checkState = !item.checkState;
+				update();
+			},
+			get: function(item) {
+				return item.checkState;
+			}
+		}]},
+	];
+
+	var table = new Table().init({
+		relElm: $('#table-wrapper-6'),
+		fields: tableField,
+		dataCallback: function(callback) {
+			callback(json);
+		}
+	});
+
+	table.showData();
+}
+
+function fn7() {
+	// 假设数据如下：
+	var json = [
+		{"sysLoginId":"ts0812100","nickname":"詹老师","initPassword":"111111","userSno":"100","subjectId":1},
+		{"sysLoginId":"ts081211","nickname":"教师11","initPassword":"111111","userSno":"11","subjectId":2, "_disabled":true},
+		{"sysLoginId":"ts081212","nickname":"教师12","initPassword":"111111","userSno":"12","subjectId":3}
+	];
+
+	// 表格字段配置：
+	var tableField = [
+		{text:'序号', key:'_no', width:50},
+		{text:'账号名', key:'sysLoginId'},
+		{text:'教师工号', key:'userSno'},
+		{text:'教师姓名', key:'nickname'},
+		{text:'分配科目', key:'_op', align:'center', components:[{
+			appearance: 'dropdown',
+			cmd: 'choose',
+			list: [
+				{text:'数学', value:1},
+				{text:'语文', value:2},
+				{text:'体育', value:3},
+				{text:'英语', value:4}
+			],
+			set: function(item, value, update) {
+				item.subjectId = value;
+				update();
+			},
+			get: function(item) {
+				return item.subjectId;
+			}
+		}]},
+	];
+
+	var table = new Table().init({
+		relElm: $('#table-wrapper-7'),
+		fields: tableField,
+		dataCallback: function(callback) {
+			callback(json);
+		}
+	});
+
+	table.showData();
+}
+
+function fn8() {
+	// 假设数据如下：
+	var json = [
+		{"sysLoginId":"ts0812100","nickname":"詹老师","initPassword":"111111","userSno":"100"},
+		{"sysLoginId":"ts081211","nickname":"教师11","initPassword":"111111","userSno":"11"},
+		{"sysLoginId":"ts081212","nickname":"教师12","initPassword":"111111","userSno":"12"}
+	];
+
+	// 表格字段配置：
+	var tableField = [
+		{text:'序号', key:'_no', width:50},
+		{text:'账号名', key:'sysLoginId'},
+		{text:'教师工号', key:'userSno'},
+		{text:'教师姓名', key:'nickname'},
+		{text:'密码', key:'_initPassword', className:'init-pwd'}
+	];
+
+	var table = new Table().init({
+		relElm: $('#table-wrapper-8'),
+		fields: tableField,
+		dataCallback: function(callback) {
+			callback(json);
+		}
+	});
+
+	table.adapter.items = itemAdapter;
+
+	function itemAdapter(item) {
+		item._id = item.sysLoginId;
+		item._initPassword = dataHelper.formatInitPassword(item.initPassword, item.passwordState);
+	};
+
+	table.showData();
+
+	$('body').on('click', '.action-init-password', function(){alert('重置密码')});
+}
+
+</script>
+
+管理后台表格组件
+=============================
+
+> 为了统一管理后台的表格风格和交互，提高代码的复用性和可维护性，减少重复工作而开发的组件
+
+> 使用之前有几点需要注意：
+
+> 1. 表格组件只保留当前页的数据，所以是全量数据的渲染输出<md-tips>（因此没有实现数据在前端的相关分页逻辑，实际业务中也没有此场景，后面有需要可以自行扩展）</md-tips>
+> 2. 数据驱动，所以要更新表格的内容，先更新表格的数据，然后再调用表格的更新方法
+> 3. 组件化，所有的可交互UI，都可以当成组件来设计
+> 4. 并非要求所有表格都使用该组件来实现，但是 html css 可以通用。
+
+- - -
+在项目中的路径 ```/src/scripts/modules/table.js```
+- - -
+
+静态属性
+---------------
+### ```.STATE_DISCARD```
+
+> 作为跳过数据的标记
+
+> Example:
+
+**HTML 代码**
+
+```
+    <div id="table-wrapper-1"></div>
+```
+
+**javascript 代码**
+
+```javascript
+
+// 引入表格组件类
+var Table = require('scripts/modules/table');
+
+// 假设数据如下：
+var json = [
+	{"sysLoginId":"ts0812100","nickname":"詹老师","initPassword":"111111","userSno":"100"},
+	{"sysLoginId":"ts081211","nickname":"教师11","initPassword":"111111","userSno":"11", "_state":Table.STATE_DISCARD},
+	{"sysLoginId":"ts081212","nickname":"教师12","initPassword":"111111","userSno":"12"}
+];
+
+// 表格字段配置：
+var tableField = [
+	{text:'序号', key:'_no', width:50},
+	{text:'账号名', key:'sysLoginId'},
+	{text:'教师工号', key:'userSno'},
+	{text:'教师姓名', key:'nickname'}
+];
+
+var table = new Table().init({
+	relElm: $('#table-wrapper-1'),
+	fields: tableField,
+	dataCallback: function(callback) {
+		callback(json);
+	}
+});
+
+table.showData();
+
+```
+<a href="#fn1" onclick="fn1()">显示表格</a>
+<div id="table-wrapper-1"></div>
+
+- - -
+
+
+实例的属性和方法
+---------------
+
+### 常用配置
+
++ **fields** [Array] 表格表头和字段的配置（这个字段的配置信息很复杂，请看下一节的说明）
++ **relElm** [HTML Element | JQ Element Object] 表格插入到这个元素里
++ **dataApi** [String] 数据获取的url
++ **dataCallback** [Function] 数据获取的函数 和dataApi互斥，优先级高于dataApi
++ **onDataGet** [Function] <md-em>仅当设置了dataApi才有效</md-em>，可用于对接口返回数据的适配
++ **pageElm** [JQ Element Object] （<md-em>注意：建议配合dataApi使用，</md-em>否则需要在dataCallback中自行编写数据分页代码）表格的分页元素，没有则无分页
++ **pageCallback** [Function] 切换页码时的回调
++ **adapter** [Object] 适配器列表 adapter.items 每一行数据的适配
++ **collapse** [String] 配置一个字段，让其和相邻数据相同的单元格合并
++ **fieldFilter** [Function] 配置一个表头字段过滤器
+
+> Example:
+
+**HTML 代码**
+
+```
+    <div id="table-wrapper-2"></div>
+    <div id="table-page-wrapper-2" class="admin-page-wrapper"></div>
+```
+
+**javascript 代码**
+
+```javascript
+
+// 引入表格组件类
+var Table = require('scripts/modules/table');
+
+// 表格字段配置：
+var tableField = [
+	{text:'序号', key:'_no', width:50},
+	{text:'账号名', key:'sysLoginId'},
+	{text:'教师工号', key:'_userSno'},
+	{text:'教师姓名', key:'nickname'}
+];
+
+var table = new Table().init({
+	relElm: $('#table-wrapper-2'),
+	fields: tableField,
+	pageElm: $('#table-page-wrapper-2'),
+	pageCallback: function(index) {
+		table.showData({
+			pageNum: index,
+			pageSize: 2
+		});
+	},
+	// 实际场景中，api不应该是一个静态数据
+	// 这里只是为了方便演示，实际上不同的页码获取的数据应该是动态的
+	// 所以为了不产生理解上的干扰，这里并不是实际的代码实现
+	dataApi: '/data/table_test_fn2_page1.json'
+});
+
+table.adapter.items = function(item) {
+	item._id = item.sysLoginId;
+	item._userSno = 'YASOON_'+item.userSno;
+
+	return item;
+};
+
+table.showData({
+	pageNum: 1,
+	pageSize: 2
+});
+
+```
+<a href="#fn2" onclick="fn2()">显示表格</a>
+<div id="table-wrapper-2"></div>
+<div id="table-page-wrapper-2" class="admin-page-wrapper"></div>
+
+- - -
+
+> Example: 合并学校名称，不显示账号名
+
+**HTML 代码**
+
+```
+    <div id="table-wrapper-3"></div>
+```
+
+**javascript 代码**
+
+```javascript
+
+// 引入表格组件类
+var Table = require('scripts/modules/table');
+
+// 假设数据如下：
+var json = [
+	{"sysLoginId":"ts0812100","nickname":"詹老师","initPassword":"111111","userSno":"100", "schoolName":"业速大学"},
+	{"sysLoginId":"ts081211","nickname":"教师11","initPassword":"111111","userSno":"11", "schoolName":"业速大学"},
+	{"sysLoginId":"ts081212","nickname":"教师12","initPassword":"111111","userSno":"12", "schoolName":"业速小学"}
+];
+
+// 表格字段配置：
+var tableField = [
+	{text:'学校', key:'schoolName'},
+	{text:'账号名', key:'sysLoginId'},
+	{text:'教师工号', key:'userSno'},
+	{text:'教师姓名', key:'nickname'}
+];
+
+var table = new Table().init({
+	relElm: $('#table-wrapper-3'),
+	fields: tableField,
+	dataCallback: function(callback) {
+		callback(json);
+	},
+	collapse: 'schoolName',
+	fieldFilter: function(cpn) {
+		if(cpn.key === 'sysLoginId') {
+			return false;
+		}
+	}
+});
+
+table.showData();
+
+```
+<a href="#fn3" onclick="fn3()">显示表格</a>
+<div id="table-wrapper-3"></div>
+
+- - -
+
+### 基础属性
+
++ **data** [Array] 表格当前页的数据，每次重新获取数据都会覆盖
++ **dom** [JQ Element Object] 取表格中 className = '.admin-table-wrapper' 的元素
++ **tableElm** [JQ Element Object] 取表格中 className = '.admin-table-main' 的元素
++ **bodyElm** [JQ Element Object] 取表格中 className = '.admin-table-body' 的元素
++ **noResultElm** [JQ Element Object] 取表格中 className = '.admin-no-result' 的元素
+
+- - -
+
+### 实例方法
+
+### ```.init(settings) ```
+
+> 为table对象添加配置，然后初始化，程序入口
+
++ **settings** [Object] 配置数据，参考上面的常用配置
+
+- - -
+
+### ```.domInit() ```
+
+> 初始化相关 HTML，一般不需要用到
+
+- - -
+
+### ```.eventInit() ```
+
+> 初始化事件绑定和消息订阅，一般不需要用到
+
+- - -
+
+### ```.create() ```
+
+> 创建表格UI框架，包含表头，不常用，只在需要更新表头的时候使用
+
+- - -
+
+### ```.getData(params, fromCache) ```
+
+> 用各种方式获取表格要显示的数据，返回 promise 对象，一般不需要直接使用
+
++ **params** [Object] 可选，请求时附带的参数
++ **fromCache** [Boolean] 可选，是否仅从缓存获取数据
+
+- - -
+
+### ```.showData(params, fromCache) ```
+
+> 让表格获取数据后，显示出来，返回一个 promise 对象，参数会传递给 .getData 方法
+
++ **params** [Object] 可选，请求时附带的参数
++ **fromCache** [Boolean] 可选，是否仅从缓存获取数据
+
+- - -
+
+### ```.formatData(data, total) ```
+
+> 进入数据标准化处理，返回标准化后的数据，一般不需要使用
+
++ **data** [Object | Array] 需要进入标准化的数据
++ **total** [Number] 数据总条数
+
+- - -
+
+### ```.getFromCache(key, value) ```
+
+> 根据条件获取表格中的一条原始数据
+
++ **key** [String] 数据的属性名
++ **value** [Any] 数据对应属性的值，这里是全等匹配
+
+- - -
+
+### ```.getFieldCpn(key) ```
+
+> 根据条件获取对应字段名下的组件列表
+
++ **key** [String] 取的是表格 fields 配置中的 key
+
+- - -
+
+### ```.setFromCpn(el, appearance) ```
+
+> 对指定DOM节点对应的组件进行 set 的指令<md-tips>（多种组件都有定义 get 和 set 的指令），</md-tips>一般不需要使用
+
++ **el** [JQ Element Object | HTML Element] 指定节点
++ **appearance** [String] 组件的类型（外在表现）
+
+- - -
+
+### ```.setFieldData(key, attr, value) ```
+
+> 更新一项表格的 fields 配置，并更新表头UI，通常在表头需要动态更新时使用
+
++ **key** [String] 取的是表格 fields 配置中的 key
++ **attr** [String] 指定 key 的一项 fields 配置项的属性名
++ **value** [Any] 期望要更改的值
+
+- - -
+
+### ```.update(id) ```
+
+> 重新渲染指定 ID 的那一行表格
+
++ **id** [String] 指定的ID值，对应表格数据对象中的 _id 属性值
+
+- - -
+
+### ```.updateCheckboxField(cpn) ```
+
+> 更新指定组件（这里是checkbox组件）的UI，主要是为了实现跨页全选的功能，不常用
+
++ **cpn** [String] 对应 field 配置项的 checkboxField 属性的值
+
+- - -
+
+fields字段说明
+---------------
+
+### 1.基础配置
+
++ **text** [String] 表头的文字
++ **key** [String] 数据属性名，通常和对应表格数据的属性名一致，特殊属性或者有修饰的以下划线开头
++ **width** [Number] 该列单元格的宽度
++ **className** [String] 给对应单元格添加一个 css 类名
++ **title** [String] 给对应单元格添加一个 html 的 title 属性和值
++ **align** [String] 给对应单元格添加一个 text-align 的 style 属性和值
++ **holder** [String | Number] 单元格默认值，如果对应单元格没有值，则显示 holder 所设置的值
++ **cmd** [String] 给对应单元格添加一个 action-cmd-xxx 的类名，用于事件绑定
++ **html** [Boolean] 设置对应单元格是否对 html 标签进行实体转义，默认为过滤掉
+
+- - -
+
+### 2.特殊配置
+
++ **col** [Number] 需要合并单元格时可设置，值为跨多少列
++ **sort** [String] 设置要排序的字段的排序方式 取值：asc，desc
++ **dataType** [String] 设置排序时数据的类型，<md-tips>数值类型和字符串类型的排序不一样</md-tips>
++ **components** [Array] 设置相关组件列表，详细说明看下面"表格组件说明"部分
++ **checkboxField** [String] 专门为全选功能设置，值为对应组件的 cmd 值
+
+
+- - -
+
+> Example: 
+
+**HTML 代码**
+
+```
+    <div id="table-wrapper-4"></div>
+```
+
+**javascript 代码**
+
+```javascript
+
+// 引入表格组件类
+var Table = require('scripts/modules/table');
+
+// 假设数据如下：
+var json = [
+	{"sysLoginId":"ts0812100","nickname":"詹老师","initPassword":"111111","userSno":"100"},
+	{"sysLoginId":"ts081211","nickname":"教师11","initPassword":"111111","userSno":"11"},
+	{"sysLoginId":"ts081212","nickname":"教师12","initPassword":"111111","userSno":"12"}
+];
+
+// 表格字段配置：
+var tableField = [
+	{text:'序号', key:'_no', width:50},
+	{text:'账号名', key:'sysLoginId'},
+	{text:'教师工号', key:'userSno', sort:'asc', dataType:'number'},
+	{text:'教师姓名', key:'nickname', sort:'desc'}
+];
+
+var table = new Table().init({
+	relElm: $('#table-wrapper-4'),
+	fields: tableField,
+	dataCallback: function(callback) {
+		callback(json);
+	}
+});
+
+table.showData();
+
+```
+<a href="#fn4" onclick="fn4()">显示表格</a>
+<div id="table-wrapper-4"></div>
+
+- - -
+
+### 3.链接文本相关的配置
+
++ **href** [String] 设置单元格内容的链接 url，有设置这个属性则判断为超链接内容
++ **encode** [Boolean] 设置单元格的内容是否需要进行 uriencode，默认为需要 uriencode，值为 false 则不需要
++ **target** [String] 为链接设置 target 属性和值
+
+- - -
+
+表格组件说明
+---------------
+
+> 不同的组件类型通过设置 appearance 的值来定义
+
+### 1.链接组件
+
+与上面链接文本不同的是，链接组件不仅支持链接文本的配置项，还可以支持 cpnFilter 的控制，链接文本只是普通文本的基础上增加了超链接的功能
+
++ **text** [String] 设置组件的显示文本
++ **style** [String] 设置组件的附加 className
++ **href** [String] 设置内容的链接 url
++ **encode** [Boolean] 设置单元格的内容是否需要进行 uriencode，默认为需要 uriencode，值为 false 则不需要
++ **target** [String] 为链接设置 target 属性和值
++ **cpnFilter** [Function] 链接组件过滤器，返回值不为 true 则不显示
+
+链接组件会识别表格数据的特殊属性，<md-em>%key% 表示这是一个占位符</md-em>
+
++ **.%key%SkipLink** [Boolean] 是否取消链接的功能
++ **.%key%Text** [String] 显示文本，优先级高于 text 配置的值（因为组件的文本通常是一致的，当你需要对某行数据特别设置显示的文本就可以使用）
+
+- - -
+
+> Example: 
+
+**HTML 代码**
+
+```
+    <div id="table-wrapper-5"></div>
+```
+
+**javascript 代码**
+
+```javascript
+
+// 引入表格组件类
+var Table = require('scripts/modules/table');
+
+// 假设数据如下：
+var json = [
+	{"sysLoginId":"ts0812100","nickname":"詹老师","initPassword":"111111","userSno":"100"},
+	{"sysLoginId":"ts081211","nickname":"教师11","initPassword":"111111","userSno":"11"},
+	{"sysLoginId":"ts081212","nickname":"教师12","initPassword":"111111","userSno":"12"}
+];
+
+// 表格字段配置：
+var tableField = [
+	{text:'序号', key:'_no', width:50},
+	{text:'账号名', key:'sysLoginId'},
+	{text:'教师工号', key:'userSno'},
+	{text:'教师姓名', key:'nickname'},
+	{text:'个人网站', key:'_page', components:[{
+		appearance: 'link',
+		text: '查看',
+		target: 'blank',
+		href: '/userPage.html?uid={{sysLoginId}}',
+		cmd: 'page-link'
+	}], cpnFilter:function(cpn, item){
+
+		if(item.sysLoginId === 'ts081211') {
+			item._pageText = '未开通';
+			item._pageSkipLink = true;
+		}
+
+		return true;
+	}},
+];
+
+var table = new Table().init({
+	relElm: $('#table-wrapper-5'),
+	fields: tableField,
+	dataCallback: function(callback) {
+		callback(json);
+	}
+});
+
+table.showData();
+
+```
+<a href="#fn5" onclick="fn5()">显示表格</a>
+<div id="table-wrapper-5"></div>
+
+- - -
+
+### 2.checkbox 组件
+
++ **cmd** [String] 区别于其他组件的一个标记，会以 data-cmd 的属性值附加
++ **style** [String] 设置组件的附加 className
++ **value** [String] 一个以 data-value 的属性值附加
++ **get(item)** [Function] 组件取得是否选中的方法
++ **set(item, value, update)** [Function] 点击组件之后的处理方法
++ **cpnFilter** [Function] 链接组件过滤器，返回值不为 true 则不显示
+
+checkbox 组件会识别表格数据的特殊属性
+
++ **_privateStyle** [String] 附加一个特殊的 className ，用于对某一行设置特殊的样式
+
+- - -
+
+> Example: 
+
+**HTML 代码**
+
+```
+    <div id="table-wrapper-6"></div>
+```
+
+**javascript 代码**
+
+```javascript
+
+// 引入表格组件类
+var Table = require('scripts/modules/table');
+
+// 假设数据如下：
+var json = [
+	{"sysLoginId":"ts0812100","nickname":"詹老师","initPassword":"111111","userSno":"100"},
+	{"sysLoginId":"ts081211","nickname":"教师11","initPassword":"111111","userSno":"11"},
+	{"sysLoginId":"ts081212","nickname":"教师12","initPassword":"111111","userSno":"12"}
+];
+
+// 表格字段配置：
+var tableField = [
+	{text:'序号', key:'_no', width:50},
+	{text:'账号名', key:'sysLoginId'},
+	{text:'教师工号', key:'userSno'},
+	{text:'教师姓名', key:'nickname'},
+	{text:'全选', key:'_op', width:80, align:'center', checkboxField:'check', components:[{
+		appearance: 'checkbox',
+		cmd: 'check',
+		set: function(item, value, update) {
+			item.checkState = !item.checkState;
+			update();
+		},
+		get: function(item) {
+			return item.checkState;
+		}
+	}]},
+];
+
+var table = new Table().init({
+	relElm: $('#table-wrapper-6'),
+	fields: tableField,
+	dataCallback: function(callback) {
+		callback(json);
+	}
+});
+
+table.showData();
+
+```
+<a href="#fn6" onclick="fn6()">显示表格</a>
+<div id="table-wrapper-6"></div>
+
+- - -
+
+### 3.radio 组件
+
++ **cmd** [String] 区别于其他组件的一个标记，会以 data-cmd 的属性值附加
++ **get(item)** [Function] 组件取得是否选中的方法
++ **set(item, value, update)** [Function] 点击组件之后的处理方法
++ **cpnFilter** [Function] 链接组件过滤器，返回值不为 true 则不显示
+
+radio 组件和 checkbox 类似，比 checkbox 简单很多，不做示例
+
+- - -
+
+### 4.dropdown 组件
+
++ **cmd** [String] 区别于其他组件的一个标记，会以 data-cmd 的属性值附加
++ **style** [String] 设置组件的附加 className
++ **list** [Array] 下拉列表的数据来源，格式为参考下面的例子
++ **get(item)** [Function] 组件取得是否选中的方法
++ **set(item, value, update)** [Function] 点击组件之后的处理方法
++ **cpnFilter** [Function] 链接组件过滤器，返回值不为 true 则不显示
+
+dropdown 组件会识别表格数据的特殊属性
+
++ **._disabled** [Boolean] 设置下列组件是否禁用，值为 true 时禁用
+
+
+- - -
+
+> Example: 
+
+**HTML 代码**
+
+```
+    <div id="table-wrapper-7"></div>
+```
+
+**javascript 代码**
+
+```javascript
+
+// 引入表格组件类
+var Table = require('scripts/modules/table');
+
+// 假设数据如下：
+var json = [
+	{"sysLoginId":"ts0812100","nickname":"詹老师","initPassword":"111111","userSno":"100","subjectId":1},
+	{"sysLoginId":"ts081211","nickname":"教师11","initPassword":"111111","userSno":"11","subjectId":2, "_disabled":true},
+	{"sysLoginId":"ts081212","nickname":"教师12","initPassword":"111111","userSno":"12","subjectId":3}
+];
+
+// 表格字段配置：
+var tableField = [
+	{text:'序号', key:'_no', width:50},
+	{text:'账号名', key:'sysLoginId'},
+	{text:'教师工号', key:'userSno'},
+	{text:'教师姓名', key:'nickname'},
+	{text:'分配科目', key:'_op', align:'center', components:[{
+		appearance: 'dropdown',
+		cmd: 'choose',
+		list: [
+			{text:'数学', value:1},
+			{text:'语文', value:2},
+			{text:'体育', value:3},
+			{text:'英语', value:4}
+		],
+		set: function(item, value, update) {
+			item.subjectId = value;
+			update();
+		},
+		get: function(item) {
+			return item.subjectId;
+		}
+	}]},
+];
+
+var table = new Table().init({
+	relElm: $('#table-wrapper-7'),
+	fields: tableField,
+	dataCallback: function(callback) {
+		callback(json);
+	}
+});
+
+table.showData();
+
+```
+<a href="#fn7" onclick="fn7()">显示表格</a>
+<div id="table-wrapper-7"></div>
+
+- - -
+
+### 5.重置密码组件
+
+> 这不是一个常规的组件，因为只是针对重置密码而做的，不具有通用性
+> 当 fields 的 key 值为 _initPassword 时，会附加一个重置密码的组件
+
+- - -
+
+> Example: 环境原因这个示例并没有实现重置密码的接口调用
+
+**HTML 代码**
+
+```
+    <div id="table-wrapper-8"></div>
+```
+
+**javascript 代码**
+
+```javascript
+
+// 引入表格组件类
+var Table = require('scripts/modules/table');
+var dataHelper = require('scripts/modules/data-helper');
+
+// 假设数据如下：
+var json = [
+	{"sysLoginId":"ts0812100","nickname":"詹老师","initPassword":"111111","userSno":"100"},
+	{"sysLoginId":"ts081211","nickname":"教师11","initPassword":"111111","userSno":"11"},
+	{"sysLoginId":"ts081212","nickname":"教师12","initPassword":"111111","userSno":"12"}
+];
+
+// 表格字段配置：
+var tableField = [
+	{text:'序号', key:'_no', width:50},
+	{text:'账号名', key:'sysLoginId'},
+	{text:'教师工号', key:'userSno'},
+	{text:'教师姓名', key:'nickname'},
+	{text:'密码', key:'_initPassword', className:'init-pwd'}
+];
+
+var table = new Table().init({
+	relElm: $('#table-wrapper-8'),
+	fields: tableField,
+	dataCallback: function(callback) {
+		callback(json);
+	}
+});
+
+table.adapter.items = itemAdapter;
+
+function itemAdapter(item) {
+	item._id = item.sysLoginId;
+	item._initPassword = dataHelper.formatInitPassword(item.initPassword, item.passwordState);
+};
+
+table.showData();
+
+$('body').on('click', '.action-init-password', function(){alert('重置密码')});
+
+```
+<a href="#fn8" onclick="fn8()">显示表格</a>
+<div id="table-wrapper-8"></div>
+
+- - -
+
+事件/消息
+---------------
+
+> table 组件的事件很少，实际项目中不常用，有需要可以自行扩展
+
++ **table_refresh** 上下文是 table.dom， 发布一个表格数据显示完成的事件。
+```.showData``` 调用后返回一个 promise 对象，并在 resolve 消息接收后发布
+
++ **checkbox-field-state-change** 上下文是 table.dom， 发布一个 checkbox 组件被点击时的事件，这个事件是在 UI 更新之前发布。

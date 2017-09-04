@@ -1,0 +1,94 @@
+
+项目中主要的组件文档
+=============================
+
+自有组件
+---------------
+
++ **accdialog.js** 通用弹层组件 [文档](../doc/accdialog.md) <md-tips>修改日期：2017-08-15</md-tips>
+
++ **apo-layer.js** 学生端显示实操题目弹层的 UI 组件 <md-tips>特殊业务组件，UI 为主，使用场景很少</md-tips>
+
++ **data-selector.js**，**chapter-selector.js** 通用数据选择器，章节选择器 <md-tips>代码中的注释已经很靠谱了，看注释即可，有时间可以整理demo</md-tips>
+
++ **cloud-file.js** 腾讯 COS SDK 的桥接器 <md-tips>涉及到资源中心预览和文件上传，主要是资源签名的获取和 SDK 的对接</md-tips>
+
++ **data-add-selector.js** 请袁野补充
+
++ **data-helper.js** 通用辅助函数集 <md-tips>都是一些小函数，看代码即可，有时间可以整理成文档</md-tips>
+
++ **dropdown.js** 通用下拉列表组件 [文档](../doc/dropdown.md) <md-tips>修改日期：2017-08-23</md-tips>
+
++ **file-preview.js** 文件在线预览组件 <md-tips>不同的资源，用不同的在线预览方式</md-tips>
+
++ **http.js** http请求组件，异步请求和队列的封装 <md-tips>大家用得很熟悉了，注意做题时是使用 queue 方法来提交</md-tips>
+
++ **paper-creator.js** 自主组卷的组件 <md-tips>只是针对发作业的业务</md-tips>
+
++ **paper-exam.js** 学生端做题组件 <md-tips>学生做题的展示和交互，注意带栏目和不带栏目的试卷会首先适配成标准数据，统一业务逻辑</md-tips>
+
++ **paper-preview.js** 老师端预览试卷组件 <md-tips>没有复杂的业务，只是纯 UI 的展示</md-tips>
+
++ **paper-template.js** 组卷时的试卷模板控制组件 <md-tips>针对发作业的业务</md-tips>
+
++ **parse-link.js**，**organ-shell.js** 针对会易学内嵌模式的解决方案 <md-tips>会易学的特殊业务需求</md-tips>
+
++ **question-add-helper.js** 编辑/新增题目的辅助配置 
+
++ **schedule.js**，**school-schedule.js** 课程表 UI 组件 <md-tips>需求已经变更，废弃</md-tips>
+
++ **step.js** 通用的步骤流程 UI 组件，用于组卷流程 
+
++ **subject-selector.js** 针对会计分录题的科目选择器 
+
++ **table.js** 管理后台表格 UI 组件 [文档](../doc/table.md) <md-tips>修改日期：2017-08-21</md-tips>
+
++ **tc-video-upload.js** 请袁野补充
+
++ **toolkit.js** 针对 H5 的开发工具集（路由，事件等） <md-tips>针对 H5 的开发，目前已经没有应用场景</md-tips>
+
++ **version.js** 针对 H5 版本更新工具 <md-tips>针对 H5 的开发，目前已经没有应用场景</md-tips>
+
++ **view.js** 针对 H5 的视图管理器 <md-tips>针对 H5 的开发，目前已经没有应用场景</md-tips>
+
+
+
+- - -
+
+二次开发组件
+---------------
+
++ **pikaday.js** 日期选择器 
+
+
+- - -
+
+
+第三方组件
+---------------
+
+> 部分对域名有要求的组件（对引用的域名有限制）并没有在开发目录上维护，直接放在 svn 的<md-path>/scripts/lib/</md-path>目录中
+
+> 引用的时候使用```http://xxx.edu369.com/static_lib/xxx.js```这样的规则，然后用 nginx 代理到该目录下去访问
+
+> 具体组件在该地址中：```http://192.168.9.146/svn/acc369/trunk/acc369-edu-static/scripts/lib```
+
++ **cos-js-sdk-v4.js** 腾讯 COS 文件上传 SDK [文档](https://www.qcloud.com/document/product/436/8095)
+
++ **highcharts.js** 矢量图表组件 [文档](https://api.hcharts.cn/highcharts)
+
++ **jquery.cookie.js** cookie 读写 [文档](https://github.com/carhartl/jquery-cookie)
+
++ **jquery.form.js** 表单异步提交 [文档](https://github.com/jquery-form/form)
+
++ **jquery.placeholder.js** 兼容IE8的 placeholder [文档](https://github.com/mathiasbynens/jquery-placeholder)
+
++ **jquery.sha1.js** sha1 算法的实现，用在登录接口
+
++ **jquery.validate.js** 表单验证组件 [文档](https://jqueryvalidation.org/documentation/)
+
++ **pdf.js** PDF 文件在线预览 [文档](https://github.com/mozilla/pdf.js)
+
++ **summernote.js** html 在线编辑器 [文档](http://summernote.org/)
+
+- - -
