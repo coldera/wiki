@@ -5,7 +5,7 @@
 自有组件
 ---------------
 
-+ **accdialog.js** 通用弹层组件 [文档](#!../doc/accdialog.mdt) <md-tips>修改日期：2017-08-15</md-tips>
++ **accdialog.js** 通用弹层组件 [文档](#!doc/accdialog.mdt) <md-tips>修改日期：2017-08-15</md-tips>
 
 + **apo-layer.js** 学生端显示实操题目弹层的 UI 组件 <md-tips>特殊业务组件，UI 为主，使用场景很少</md-tips>
 
@@ -17,7 +17,7 @@
 
 + **data-helper.js** 通用辅助函数集 <md-tips>都是一些小函数，看代码即可，有时间可以整理成文档</md-tips>
 
-+ **dropdown.js** 通用下拉列表组件 [文档](#!../doc/dropdown.mdt) <md-tips>修改日期：2017-08-23</md-tips>
++ **dropdown.js** 通用下拉列表组件 [文档](#!doc/dropdown.mdt) <md-tips>修改日期：2017-08-23</md-tips>
 
 + **file-preview.js** 文件在线预览组件 <md-tips>不同的资源，用不同的在线预览方式</md-tips>
 
@@ -41,7 +41,7 @@
 
 + **subject-selector.js** 针对会计分录题的科目选择器 
 
-+ **table.js** 管理后台表格 UI 组件 [文档](#!../doc/table.mdt) <md-tips>修改日期：2017-08-21</md-tips>
++ **table.js** 管理后台表格 UI 组件 [文档](#!doc/table.mdt) <md-tips>修改日期：2017-08-21</md-tips>
 
 + **tc-video-upload.js** 请袁野补充
 
