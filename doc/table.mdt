@@ -1,7 +1,7 @@
 <script>
 Loader.load([
-	'./assets/_new_vendors.js',
-	'./assets/_new_vendors.css',
+	'./assets/vendors.js',
+	'./assets/vendors.css',
 	'./assets/table.js',
 	'./assets/common.css'
 ]);
