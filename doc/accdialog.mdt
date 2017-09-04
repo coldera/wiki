@@ -33,7 +33,7 @@ function fn3(e) {
 }
 
 function fn4() {
-	var box = accdialog.dialog('/data/accdialog_test_fn4.json', {
+	var box = accdialog.dialog('data/accdialog_test_fn4.json', {
 		title: '测试组件',
 		contentAdapter: function(data) {
 			return data.text;
@@ -205,7 +205,7 @@ dialog.notice('hello world', {
 
 ```javascript
 var dialog = require('scripts/plugins/accdialog');
-var box = dialog.dialog('/data/accdialog_test_fn4.json', {
+var box = dialog.dialog('data/accdialog_test_fn4.json', {
 	title: '测试组件',
 	contentAdapter: function(data) {
 		return data.text;
